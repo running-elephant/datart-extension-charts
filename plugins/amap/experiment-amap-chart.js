@@ -36,7 +36,7 @@ function GaodeMapChart({ dHelper }) {
       "https://cdn.jsdelivr.net/npm/echarts@5.1.1/dist/echarts.min.js",
       "https://cdn.jsdelivr.net/npm/echarts-extension-amap@1.10.1/dist/echarts-extension-amap.min.js",
     ],
-    geoMap,
+    geoMap: null,
 
     constructor(props) {
       super(
@@ -95,13 +95,13 @@ function GaodeMapChart({ dHelper }) {
       const styleConfigs = config.styles;
       const dataConfigs = config.datas || [];
       const groupConfigs = dataConfigs
-        .filter((c) => c.type === ChartDataSectionType.GROUP)
+        .filter((c) => c.type === "group")
         .flatMap((config) => config.rows || []);
       const aggregateConfigs = dataConfigs
-        .filter((c) => c.type === ChartDataSectionType.AGGREGATE)
+        .filter((c) => c.type === "aggregate")
         .flatMap((config) => config.rows || []);
       const sizeConfigs = dataConfigs
-        .filter((c) => c.type === ChartDataSectionType.SIZE)
+        .filter((c) => c.type === "size")
         .flatMap((config) => config.rows || []);
 
       const objDataColumns = dHelper.transfromToObjectArray(
@@ -111,7 +111,7 @@ function GaodeMapChart({ dHelper }) {
 
       this.registerGeoMap(styleConfigs);
 
-      const theme = getStyleValueByGroup(styleConfigs, "map", "theme");
+      const theme = dHelper.getStyleValueByGroup(styleConfigs, "map", "theme");
 
       return {
         amap: {
@@ -297,7 +297,7 @@ function GaodeMapChart({ dHelper }) {
 
     getDataColumnMaxAndMin(objDataColumns, config) {
       const datas = objDataColumns.map(
-        (row) => row[getValueByColumnKey(config)]
+        (row) => row[dHelper.getValueByColumnKey(config)]
       );
       const min = Number.isNaN(Math.min(...datas)) ? 0 : Math.min(...datas);
       const max = Number.isNaN(Math.max(...datas)) ? 100 : Math.max(...datas);
@@ -320,7 +320,11 @@ function GaodeMapChart({ dHelper }) {
     },
 
     registerGeoMap(styleConfigs) {
-      const mapLevelName = getStyleValueByGroup(styleConfigs, "map", "level");
+      const mapLevelName = dHelper.getStyleValueByGroup(
+        styleConfigs,
+        "map",
+        "level"
+      );
       this.geoMap = mapLevelName === "china" ? geoChina : geoChinaCity;
     },
   };

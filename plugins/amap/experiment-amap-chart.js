@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-import geoChinaCity from "./geo-china-city.map.json";
-import geoChina from "./geo-china.map.json";
+import geoChinaCity from "./geo-china-city-map.json";
+import geoChina from "./geo-china-map.json";
 import config from "./config";
 
 /**
@@ -26,7 +26,7 @@ import config from "./config";
  * @param {*} { dHelper }, Datart Helper Utils
  * @return {*} void
  */
-function GaodeMapChart({ dHelper }) {
+export function GaodeMapChart({ dHelper }) {
   return {
     isISOContainer: "gaodemap-chart",
     chart: null,
@@ -37,19 +37,16 @@ function GaodeMapChart({ dHelper }) {
       "https://cdn.jsdelivr.net/npm/echarts-extension-amap@1.10.1/dist/echarts-extension-amap.min.js",
     ],
     geoMap: null,
-
-    constructor(props) {
-      super(
-        props?.id || "experiment-gaodemap-chart",
-        props?.name || "高德地图",
-        props?.icon || "china"
-      );
-      this.meta.requirements = props?.requirements || [
+    meta: {
+      id: "experiment-gaodemap-chart",
+      name: "高德地图",
+      icon: "chart",
+      requirements: [
         {
           group: 1,
           aggregate: [1, 2],
         },
-      ];
+      ],
     },
 
     onMount(options, context) {

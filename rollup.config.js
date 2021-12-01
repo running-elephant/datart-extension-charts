@@ -4,7 +4,7 @@ import { terser } from "rollup-plugin-terser";
 export default {
   input: "plugins/amap/index.js",
   output: [
-    { file: "dist/datart-amap.js", format: "iife" },
+    { file: "dist/datart-amap.iife.js", format: "iife" },
     // {
     //   file: "dist/datart-amap.min.js",
     //   format: "iife",

@@ -120612,15 +120612,15 @@
   const config = {
     datas: [
       {
-        label: "metrics",
-        key: "metrics",
+        label: "dimension",
+        key: "dimension",
         required: true,
         type: "group",
         maxFieldCount: 1,
       },
       {
         label: "deminsionAndColor",
-        key: "deminsion",
+        key: "metrics",
         required: true,
         type: "aggregate",
         maxFieldCount: 1,

@@ -16,6 +16,7 @@ yarn.lock
 *.zip
 # misc
 .DS_Store
+**/.DS_Store
 .datart-cli
 .env.local
 .env.development.local

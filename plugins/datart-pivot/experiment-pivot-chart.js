@@ -1024,7 +1024,11 @@ export function PivotTableChart({ dHelper }) {
     },
 
     onResize(opt, context) {
-      this.chart && this.chart.resize(context);
+      if (!this.chart) {
+        return;
+      }
+      this.chart.changeSize(context.width, context.height);
+      this.chart.render(false);
     },
 
     getOptions(dataset, config) {

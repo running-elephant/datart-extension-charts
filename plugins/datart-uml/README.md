@@ -3,7 +3,7 @@
 - [x] datart version: **1.0.0**
 - [x] status: **experimental**
 
-![时序图]('./experiment-uml-chart.png')
+![时序图](./experiment-uml-chart.png)
 
 ## 使用说明
 

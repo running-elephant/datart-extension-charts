@@ -3,7 +3,7 @@
 - [x] datart version: **1.0.0**
 - [x] status: **experimental**
 
-![VUEJS](./experiment-uml-chart.png)
+![VUEJS](./vuejs-chart.png)
 
 ## 使用说明
 

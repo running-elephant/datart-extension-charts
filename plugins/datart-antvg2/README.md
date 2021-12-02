@@ -3,7 +3,7 @@
 - [x] datart version: **1.0.0**
 - [x] status: **experimental**
 
-![ZRender](./experiment-zrender-chart.png)
+![ZRender](./experiment-antvg2-chart.png)
 
 ## 使用说明
 

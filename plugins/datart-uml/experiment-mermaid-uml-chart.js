@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+import icon from './icon.svg';
+
 export function MermaidUMLChart({ dHelper }) {
   const mockData = {
     code: `%%{config: { 'fontFamily': 'Menlo', 'fontSize': 12, 'fontWeight': 400} }%%
@@ -112,7 +114,7 @@ export function MermaidUMLChart({ dHelper }) {
     meta: {
       id: "experiment-mermaid-uml-chart",
       name: "[Experiment] Mermaid UML",
-      icon: "chart",
+      icon: icon,
       requirements: [
         {
           group: null,

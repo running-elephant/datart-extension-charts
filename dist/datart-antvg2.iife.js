@@ -437,12 +437,11 @@
         }
 
         const { Chart } = context.window.G2;
-        const DataSet = context.window.Dataset;
-        if (!Chart && DataSet) {
+        if (!Chart) {
           return;
         }
 
-        const ds = new DataSet();
+        const ds = new context.window.Dataset();
         const chart = new Chart({
           container: options.containerId,
           autoFit: true,

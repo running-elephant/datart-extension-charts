@@ -1,5 +1,6 @@
 import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
+import svg from "rollup-plugin-svg";
 const fs = require("fs");
 
 const pluginFolders = () => {
@@ -12,8 +13,8 @@ export default pluginFolders().map((name) => {
     input: `plugins/${name}/index.js`,
     output: {
       file: `dist/${name}.iife.js`,
-      format: "iife"
+      format: "iife",
     },
-    plugins: [json()],
+    plugins: [json(), svg({ base64: false })],
   };
 });

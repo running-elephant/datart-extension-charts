@@ -22,6 +22,11 @@ export default pluginFolders().map((name) => {
       }),
       json(),
       svg({ base64: false }),
+      terser({
+        compress: {
+          defaults: false,
+        },
+      }),
     ],
   };
 });

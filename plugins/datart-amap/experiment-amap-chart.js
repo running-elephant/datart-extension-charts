@@ -19,6 +19,7 @@
 import geoChinaCity from "./geo-china-city-map.json";
 import geoChina from "./geo-china-map.json";
 import config from "./config";
+import icon from './gaode-map-logo.svg';
 
 /**
  * @summary
@@ -40,7 +41,7 @@ export function GaodeMapChart({ dHelper }) {
     meta: {
       id: "experiment-gaodemap-chart",
       name: "高德地图",
-      icon: "chart",
+      icon: icon,
       requirements: [
         {
           group: 1,

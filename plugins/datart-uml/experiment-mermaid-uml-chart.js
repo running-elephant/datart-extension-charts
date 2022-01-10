@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-import icon from './icon.svg';
+import icon from "./icon.svg";
 
 export function MermaidUMLChart({ dHelper }) {
   const mockData = {
@@ -122,14 +122,10 @@ export function MermaidUMLChart({ dHelper }) {
         },
       ],
     },
+    _containerId: null,
 
     onMount(options, context) {
-      if (context.document) {
-        var elemDiv = context.document.createElement("div");
-        context.document.body.appendChild(elemDiv);
-        context.document.body.innerHTML = `<div id="my-mermaid" class="mermaid"></div>`;
-      }
-
+      this._containerId = options.containerId;
       if ("mermaid" in context.window) {
         this.chart = context.window.mermaid.mermaidAPI;
         this.chart.initialize({
@@ -145,15 +141,17 @@ export function MermaidUMLChart({ dHelper }) {
       const watermark =
         dHelper.getStyleValueByGroup(styles, "watermark", "area") ||
         mockData.watermark;
-      var outputDiv = context.document.getElementById("my-mermaid");
+      var outputDiv = context.document.getElementById(this._containerId);
 
-      this.chart.render("theGraph", code, function (svgCode) {
-        outputDiv.style.position = "relative";
-        outputDiv.style.overflow = "hidden";
-        outputDiv.style.margin = "20px";
-        outputDiv.innerHTML = svgCode;
-      });
-      this.addWatermark(outputDiv, watermark, context);
+      if (this.chart && outputDiv) {
+        this.chart.render("theGraph", code, function (svgCode) {
+          outputDiv.style.position = "relative";
+          outputDiv.style.overflow = "hidden";
+          outputDiv.style.margin = "20px";
+          outputDiv.innerHTML = svgCode;
+        });
+        this.addWatermark(outputDiv, watermark, context);
+      }
     },
 
     onUnMount() {

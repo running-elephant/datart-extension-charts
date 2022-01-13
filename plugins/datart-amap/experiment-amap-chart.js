@@ -19,7 +19,7 @@
 import geoChinaCity from "./geo-china-city-map.json";
 import geoChina from "./geo-china-map.json";
 import config from "./config";
-import icon from './gaode-map-logo.svg';
+import icon from "./gaode-map-logo.svg";
 
 /**
  * @summary
@@ -108,8 +108,7 @@ export function GaodeMapChart({ dHelper }) {
       );
 
       this.registerGeoMap(styleConfigs);
-
-      const theme = dHelper.getStyleValueByGroup(styleConfigs, "map", "theme");
+      const theme = dHelper.getValue(styleConfigs, ["map", "theme"]);
 
       return {
         amap: {
@@ -158,17 +157,9 @@ export function GaodeMapChart({ dHelper }) {
       sizeConfigs,
       styleConfigs
     ) {
-      const showLabel = dHelper.getStyleValueByGroup(
-        styleConfigs,
-        "label",
-        "showLabel"
-      );
-      const cycleRatio = dHelper.getStyleValueByGroup(
-        styleConfigs,
-        "map",
-        "cycleRatio"
-      );
-      const font = dHelper.getStyleValueByGroup(styleConfigs, "label", "font");
+      const showLabel = dHelper.getValue(styleConfigs, ["label", "showLabel"]);
+      const cycleRatio = dHelper.getValue(styleConfigs, ["map", "cycleRatio"]);
+      const font = dHelper.getValue(styleConfigs, ["label", "font"]);
       const { min, max } = this.getDataColumnMaxAndMin(
         objDataColumns,
         sizeConfigs[0]
@@ -228,36 +219,13 @@ export function GaodeMapChart({ dHelper }) {
       sizeConfigs,
       styleConfigs
     ) {
-      const show = dHelper.getStyleValueByGroup(
-        styleConfigs,
-        "visualMap",
-        "show"
-      );
-      const orient = dHelper.getStyleValueByGroup(
-        styleConfigs,
-        "visualMap",
-        "orient"
-      );
-      const align = dHelper.getStyleValueByGroup(
-        styleConfigs,
-        "visualMap",
-        "align"
-      );
-      const itemWidth = dHelper.getStyleValueByGroup(
-        styleConfigs,
-        "visualMap",
-        "itemWidth"
-      );
-      const itemHeight = dHelper.getStyleValueByGroup(
-        styleConfigs,
-        "visualMap",
-        "itemHeight"
-      );
-      const font = dHelper.getStyleValueByGroup(
-        styleConfigs,
-        "visualMap",
-        "font"
-      );
+      const [show, orient, align, itemWidth, itemHeight, font] =
+        dHelper.getStyles(
+          styleConfigs,
+          ["visualMap"],
+          ["show", "orient", "align", "itemWidth", "itemHeight", "font"]
+        );
+
       if (!show || !aggregateConfigs?.length) {
         return [];
       }
@@ -318,11 +286,7 @@ export function GaodeMapChart({ dHelper }) {
     },
 
     registerGeoMap(styleConfigs) {
-      const mapLevelName = dHelper.getStyleValueByGroup(
-        styleConfigs,
-        "map",
-        "level"
-      );
+      const mapLevelName = dHelper.getValue(styleConfigs, ["map", "level"]);
       this.geoMap = mapLevelName === "china" ? geoChina : geoChinaCity;
     },
   };

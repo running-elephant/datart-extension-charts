@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+import TimeIcon from "./time.svg";
+
 export function LifeExpectancyChart({ dHelper }) {
   const mockData = {
     data: {
@@ -1757,95 +1759,8 @@ export function LifeExpectancyChart({ dHelper }) {
 
   return {
     config: {
-      datas: [
-        {
-          label: "dimension",
-          key: "dimension",
-          required: true,
-          type: "group",
-        },
-        {
-          label: "metrics",
-          key: "metrics",
-          required: true,
-          type: "aggregate",
-        },
-        {
-          label: "filter",
-          key: "filter",
-          type: "filter",
-          allowSameField: true,
-        },
-        {
-          label: "colorize",
-          key: "color",
-          type: "color",
-        },
-      ],
-      styles: [
-        {
-          label: "label",
-          key: "label",
-          comType: "group",
-          rows: [
-            {
-              label: "showLabel",
-              key: "showLabel",
-              default: false,
-              comType: "checkbox",
-              options: {},
-            },
-            {
-              label: "showLabelBySwitch",
-              key: "showLabelBySwitch",
-              default: true,
-              comType: "switch",
-              options: {},
-              watcher: {
-                deps: ["showLabel"],
-                action: ({ ...props }) => {
-                  return {
-                    disabled: !props.showLabel,
-                  };
-                },
-              },
-            },
-            {
-              label: "showDataColumns",
-              key: "dataColumns",
-              comType: "select",
-              options: {
-                getItems: (cols) => {
-                  const sections = (cols || []).filter((col) =>
-                    ["metrics", "dimension"].includes(col.key)
-                  );
-                  const columns = sections.reduce(
-                    (acc, cur) => acc.concat(cur.columns || []),
-                    []
-                  );
-                  return columns.map((c) => ({
-                    id: c.colName,
-                    key: c.colName,
-                    label: c.label,
-                  }));
-                },
-              },
-            },
-            {
-              label: "fontFamily",
-              key: "fontFamily",
-              comType: "fontFamily",
-              default: "黑体",
-            },
-            {
-              label: "fontSize",
-              key: "fontSize",
-              comType: "fontSize",
-              default: "20",
-            },
-          ],
-        },
-      ],
+      datas: [],
+      styles: [],
       i18ns: [
         {
           lang: "zh-CN",
@@ -1885,11 +1800,11 @@ export function LifeExpectancyChart({ dHelper }) {
     meta: {
       id: "life-expectancy-chart",
       name: "[Experiment] 人均寿命演变图",
-      icon: "scatter-chart",
+      icon: TimeIcon,
       requirements: [
         {
-          group: 0,
-          aggregate: 0,
+          group: null,
+          aggregate: null,
         },
       ],
     },
@@ -1900,6 +1815,7 @@ export function LifeExpectancyChart({ dHelper }) {
       }
 
       if ("echarts" in context.window) {
+        console.log(`Mount | context.window ---> `, options.containerId);
         this.chart = context.window.echarts.init(
           context.document.getElementById(options.containerId),
           "default"
@@ -1913,12 +1829,13 @@ export function LifeExpectancyChart({ dHelper }) {
     onUpdated(props) {
       if (!props.dataset || !props.dataset.columns || !props.config) {
         return;
-      }
+      }w
       if (!this.isMatchRequirement(props.config)) {
         this.chart?.clear();
         return;
       }
       const newOptions = this.getOptions(props.dataset, props.config);
+      console.log(`OnUpdate | context.window ---> `, newOptions);
       this.chart?.setOption(Object.assign({}, newOptions), true);
     },
 

@@ -131,144 +131,147 @@ export function ZRenderChart({ dHelper }) {
       });
     },
 
-    
-  onUpdated(props, context) {
-    if (!props.dataset || !props.dataset.columns || !props.config) {
-      return;
-    }
-    if (!this.isMatchRequirement(props.config)) {
-      this.chart.clear();
-      return;
-    }
-    this.draw(context, props.config.styles);
-  },
+    onUpdated(props, context) {
+      if (!props.dataset || !props.dataset.columns || !props.config) {
+        return;
+      }
+      if (!this.isMatchRequirement(props.config)) {
+        this.chart.clear();
+        return;
+      }
+      this.draw(context, props.config.styles);
+    },
 
-  onUnMount() {
-    this.chart && this.chart.dispose();
-  },
+    onUnMount() {
+      this.chart && this.chart.dispose();
+    },
 
-  onResize(opt, context) {
-    this.draw(context, opt?.config?.styles);
-  },
+    onResize(opt, context) {
+      this.draw(context, opt?.config?.styles);
+    },
 
-  draw(context, styles) {
-    const { text, fontL, fontR } = this.getText(styles);
+    draw(context, styles) {
+      const { text, fontL, fontR } = this.getText(styles);
 
-    const { zrender } = context.window;
-    const zr = this.chart;
-    var w = context.width || zr.getWidth();
-    var h = context.height || zr.getHeight();
-    zr.clear();
-    zr.resize({
-      width: w,
-      height: h,
-    });
-
-    var t0 = new zrender.Rect({
-      style: {
-        fill: '#333',
-      },
-      shape: {
+      const { zrender } = context.window;
+      const zr = this.chart;
+      var w = context.width || zr.getWidth();
+      var h = context.height || zr.getHeight();
+      zr.clear();
+      zr.resize({
         width: w,
         height: h,
-      },
-    });
-    zr.add(t0);
+      });
 
-    var t1 = new zrender.Text({
-      style: {
-        text: text,
-        textAlign: 'center',
-        textVerticalAlign: 'middle',
-        fontSize: fontL.fontSize,
-        fontFamily: fontL.fontFamily,
-        fontWeight: fontL.fontWight,
-        textFill: fontL.color,
-        blend: 'lighten',
-      },
-      position: [w / 2 + 5, h / 2],
-    });
-    zr.add(t1);
-
-    var t2 = new zrender.Text({
-      style: {
-        text: text,
-        textAlign: 'center',
-        textVerticalAlign: 'middle',
-        fontSize: fontR.fontSize,
-        fontFamily: fontR.fontFamily,
-        fontWeight: fontR.fontWight,
-        textFill: fontR.color,
-        blend: 'lighten',
-      },
-      position: [w / 2, h / 2],
-    });
-    zr.add(t2);
-
-    var lines = [];
-    for (var i = 0; i < 16; ++i) {
-      var line = new zrender.Rect({
-        shape: {
-          x: w * (Math.random() - 0.3),
-          y: h * Math.random(),
-          width: w * (Math.random() + 0.3),
-          height: Math.random() * 8,
-        },
+      var t0 = new zrender.Rect({
         style: {
-          fill: ['#ff0', '#f0f', '#0ff', '#00f'][Math.floor(Math.random() * 4)],
-          blend: 'lighten',
-          opacity: 0,
+          fill: "#333",
+        },
+        shape: {
+          width: w,
+          height: h,
         },
       });
-      zr.add(line);
-      lines.push(line);
-    }
+      zr.add(t0);
 
-    if (this.timerId) {
-      context.window.clearInterval(this.timerId);
-    }
+      var t1 = new zrender.Text({
+        style: {
+          text: text,
+          textAlign: "center",
+          textVerticalAlign: "middle",
+          fontSize: fontL.fontSize,
+          fontFamily: fontL.fontFamily,
+          fontWeight: fontL.fontWight,
+          textFill: fontL.color,
+          blend: "lighten",
+        },
+        position: [w / 2 + 5, h / 2],
+      });
+      zr.add(t1);
 
-    this.timerId = setInterval(function () {
-      if (Math.random() > 0.2) {
-        t2.attr('position', [w / 2 + Math.random() * 50, h / 2]);
+      var t2 = new zrender.Text({
+        style: {
+          text: text,
+          textAlign: "center",
+          textVerticalAlign: "middle",
+          fontSize: fontR.fontSize,
+          fontFamily: fontR.fontFamily,
+          fontWeight: fontR.fontWight,
+          textFill: fontR.color,
+          blend: "lighten",
+        },
+        position: [w / 2, h / 2],
+      });
+      zr.add(t2);
 
-        for (var i = 0; i < lines.length; ++i) {
-          lines[i].attr('shape', {
-            x: w * Math.random(),
+      var lines = [];
+      for (var i = 0; i < 16; ++i) {
+        var line = new zrender.Rect({
+          shape: {
+            x: w * (Math.random() - 0.3),
             y: h * Math.random(),
-            width: w * Math.random(),
+            width: w * (Math.random() + 0.3),
             height: Math.random() * 8,
-          });
-          lines[i].attr('style', {
-            opacity: 1,
-          });
-        }
+          },
+          style: {
+            fill: ["#ff0", "#f0f", "#0ff", "#00f"][
+              Math.floor(Math.random() * 4)
+            ],
+            blend: "lighten",
+            opacity: 0,
+          },
+        });
+        zr.add(line);
+        lines.push(line);
+      }
 
-        setTimeout(function () {
-          t2.attr('position', [w / 2, h / 2]);
+      if (this.timerId) {
+        context.window.clearInterval(this.timerId);
+      }
+
+      this.timerId = setInterval(function () {
+        if (Math.random() > 0.2) {
+          t2.attr("position", [w / 2 + Math.random() * 50, h / 2]);
 
           for (var i = 0; i < lines.length; ++i) {
-            lines[i].attr('style', {
-              opacity: 0,
+            lines[i].attr("shape", {
+              x: w * Math.random(),
+              y: h * Math.random(),
+              width: w * Math.random(),
+              height: Math.random() * 8,
+            });
+            lines[i].attr("style", {
+              opacity: 1,
             });
           }
-        }, 100);
-      }
-    }, 500);
-  },
 
-  getText(styles) {
-    if (styles) {
-      const text = dHelper.getStyleValueByGroup(styles, 'label', 'text');
-      const fontL = dHelper.getStyleValueByGroup(styles, 'label', 'fontL');
-      const fontR = dHelper.getStyleValueByGroup(styles, 'label', 'fontR');
-      this.textObj = {
-        text,
-        fontL,
-        fontR,
-      };
-    }
-    return this.textObj;
-  }
+          setTimeout(function () {
+            t2.attr("position", [w / 2, h / 2]);
+
+            for (var i = 0; i < lines.length; ++i) {
+              lines[i].attr("style", {
+                opacity: 0,
+              });
+            }
+          }, 100);
+        }
+      }, 500);
+    },
+
+    getText(styles) {
+      if (styles) {
+        const [text, fontL, fontR] = dHelper.getStyles(
+          styles,
+          ["label"],
+          ["text", "fontL", "fontR"]
+        );
+        this.textObj = {
+          text,
+          fontL,
+          fontR,
+        };
+      }
+      return this.textObj;
+    },
   };
 }

@@ -137,9 +137,9 @@ export function MermaidUMLChart({ dHelper }) {
     onUpdated(options, context) {
       const styles = options.config.styles;
       const code =
-        dHelper.getStyleValueByGroup(styles, "code", "area") || mockData.code;
+        dHelper.getValue(styles, ["code", "area"]) || mockData.code;
       const watermark =
-        dHelper.getStyleValueByGroup(styles, "watermark", "area") ||
+        dHelper.getValue(styles, ["watermark", "area"]) ||
         mockData.watermark;
       var outputDiv = context.document.getElementById(this._containerId);
 

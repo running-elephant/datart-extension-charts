@@ -104,7 +104,7 @@ export function ZRenderChart({ dHelper }) {
     meta: {
       id: "experiment-zrender-chart",
       name: "[Experiment] ZRender Chart",
-      icon: "chart",
+      icon: 'chart',
       requirements: [
         {
           group: null,

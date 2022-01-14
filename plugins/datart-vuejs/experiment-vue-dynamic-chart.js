@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+import VueJSIcon from "./vuejs.svg";
+
 export function VueDynamicChart({ dHelper }) {
   const getCode = () => {
     return `
@@ -151,7 +153,7 @@ export function VueDynamicChart({ dHelper }) {
     meta: {
       id: "experiment-vue-dynamic-chart",
       name: "[Experiment] VUEJS Chart",
-      icon: "chart",
+      icon: VueJSIcon,
       requirements: [
         {
           group: null,

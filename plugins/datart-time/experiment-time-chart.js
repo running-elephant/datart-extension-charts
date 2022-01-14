@@ -1815,7 +1815,6 @@ export function LifeExpectancyChart({ dHelper }) {
       }
 
       if ("echarts" in context.window) {
-        console.log(`Mount | context.window ---> `, options.containerId);
         this.chart = context.window.echarts.init(
           context.document.getElementById(options.containerId),
           "default"
@@ -1835,7 +1834,6 @@ export function LifeExpectancyChart({ dHelper }) {
         return;
       }
       const newOptions = this.getOptions(props.dataset, props.config);
-      console.log(`OnUpdate | context.window ---> `, newOptions);
       this.chart?.setOption(Object.assign({}, newOptions), true);
     },
 

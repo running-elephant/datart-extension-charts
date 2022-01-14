@@ -197,7 +197,7 @@ export function VueDynamicChart({ dHelper }) {
     },
 
     getInfo(styleConfigs) {
-      const name = dHelper.getStyleValueByGroup(styleConfigs, "label", "name");
+      const name = dHelper.getValue(styleConfigs, ["label", "name"]);
       return name;
     },
 

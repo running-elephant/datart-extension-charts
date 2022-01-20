@@ -26,7 +26,7 @@ const config = {
       maxFieldCount: 1,
     },
     {
-      label: "deminsionAndColor",
+      label: "metrics",
       key: "metrics",
       required: true,
       type: "aggregate",
@@ -139,18 +139,18 @@ const config = {
       ],
     },
     {
-      label: "visualMap.title",
+      label: "viz.palette.style.visualMap.title",
       key: "visualMap",
       comType: "group",
       rows: [
         {
-          label: "visualMap.show",
+          label: "viz.palette.style.visualMap.show",
           key: "show",
           default: true,
           comType: "checkbox",
         },
         {
-          label: "visualMap.orient",
+          label: "viz.palette.style.visualMap.orient",
           key: "orient",
           comType: "select",
           default: "vertical",
@@ -162,7 +162,7 @@ const config = {
           },
         },
         {
-          label: "visualMap.align",
+          label: "viz.palette.style.visualMap.align",
           key: "align",
           comType: "select",
           default: "auto",
@@ -177,13 +177,13 @@ const config = {
           },
         },
         {
-          label: "visualMap.itemWidth",
+          label: "viz.palette.style.visualMap.itemWidth",
           key: "itemWidth",
           default: 20,
           comType: "inputNumber",
         },
         {
-          label: "visualMap.itemHeight",
+          label: "viz.palette.style.visualMap.itemHeight",
           key: "itemHeight",
           default: 140,
           comType: "inputNumber",
@@ -207,6 +207,7 @@ const config = {
     {
       lang: "zh-CN",
       translation: {
+        chartName: "高德地图",
         common: {
           showAxis: "显示坐标轴",
           inverseAxis: "反转坐标轴",
@@ -228,7 +229,7 @@ const config = {
           min: "最小值",
           max: "最大值",
         },
-        deminsionAndColor: "指标(颜色)",
+        metricsAndColor: "指标(颜色)",
         label: {
           title: "标签",
           showLabel: "显示标签",
@@ -242,6 +243,47 @@ const config = {
           cycleRatio: "气泡大像素比",
         },
         background: { title: "背景设置" },
+      },
+    },
+    {
+      lang: "en-US",
+      translation: {
+        chartName: "AMAP",
+        common: {
+          showAxis: "Show Axis",
+          inverseAxis: "Inverse Axis",
+          lineStyle: "Line Style",
+          borderType: "Border Type",
+          borderWidth: "Border Width",
+          borderColor: "Border Color",
+          backgroundColor: "Background Color",
+          showLabel: "Show Label",
+          unitFont: "Unit Font",
+          rotate: "Rotate",
+          position: "Position",
+          showInterval: "Show Interval",
+          interval: "Interval",
+          showTitleAndUnit: "Show Title and Unit",
+          nameLocation: "Name Location",
+          nameRotate: "Name Rotate",
+          nameGap: "Name Gap",
+          min: "Min",
+          max: "Max",
+        },
+        metricsAndColor: "Metric(Color)",
+        label: {
+          title: "Label",
+          showLabel: "Show Label",
+          position: "Postion",
+        },
+        map: {
+          title: "Setting",
+          level: "Level",
+          enableZoom: "Enable Zoom",
+          theme: "Theme",
+          cycleRatio: "Cycle Ratio",
+        },
+        background: { title: "Background Setting" },
       },
     },
   ],

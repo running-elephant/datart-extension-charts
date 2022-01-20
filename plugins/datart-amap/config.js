@@ -229,7 +229,6 @@ const config = {
           min: "最小值",
           max: "最大值",
         },
-        metricsAndColor: "指标(颜色)",
         label: {
           title: "标签",
           showLabel: "显示标签",
@@ -270,7 +269,6 @@ const config = {
           min: "Min",
           max: "Max",
         },
-        metricsAndColor: "Metric(Color)",
         label: {
           title: "Label",
           showLabel: "Show Label",

@@ -40,7 +40,7 @@ export function GaodeMapChart({ dHelper }) {
     geoMap: null,
     meta: {
       id: "experiment-gaodemap-chart",
-      name: "高德地图",
+      name: "chartName",
       icon: icon,
       requirements: [
         {

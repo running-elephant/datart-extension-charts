@@ -20,6 +20,7 @@ import geoChinaCity from "./geo-china-city-map.json";
 import geoChina from "./geo-china-map.json";
 import config from "./config";
 import icon from "./gaode-map-logo.svg";
+import { IChart } from "../../core/datart";
 
 /**
  * @summary
@@ -27,7 +28,7 @@ import icon from "./gaode-map-logo.svg";
  * @param {*} { dHelper }, Datart Helper Utils
  * @return {*} void
  */
-export function GaodeMapChart({ dHelper }) {
+export function GaodeMapChart({ dHelper }): IChart & any {
   return {
     isISOContainer: "gaodemap-chart",
     chart: null,
@@ -144,7 +145,7 @@ export function GaodeMapChart({ dHelper }) {
     },
 
     loadMapTools(context) {
-      var amapComponent = this.chart.getModel().getComponent("amap");
+      var amapComponent = this.chart?.getModel()?.getComponent("amap");
       var amap = amapComponent.getAMap();
       amap.addControl(new context.window.AMap.Scale());
       amap.addControl(new context.window.AMap.ToolBar());

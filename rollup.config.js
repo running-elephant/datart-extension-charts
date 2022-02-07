@@ -2,6 +2,8 @@ import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 import svg from "rollup-plugin-svg";
 import progress from "rollup-plugin-progress";
+import typescript from "@rollup/plugin-typescript";
+
 const fs = require("fs");
 
 const pluginFolders = () => {
@@ -18,7 +20,7 @@ export default pluginFolders().map((name) => {
     },
     plugins: [
       progress({
-        clearLine: false, // default: true
+        clearLine: false,
       }),
       json(),
       svg({ base64: false }),
@@ -27,6 +29,7 @@ export default pluginFolders().map((name) => {
           defaults: false,
         },
       }),
+      typescript(),
     ],
   };
 });

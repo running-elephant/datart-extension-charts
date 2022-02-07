@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "target": "es5",
+    "lib": ["es5", "es6", "dom"],
+    "module": "esnext",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+  "include": ["plugins/**/*", "index.d.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

@@ -103,9 +103,10 @@ export function GaodeMapChart({ dHelper }): IChart & any {
         .filter((c) => c.type === "size")
         .flatMap((config) => config.rows || []);
 
-      const objDataColumns = dHelper.transformToObjectArray(
+      const chartDataSet = dHelper.transformToDataSet(
         dataset.rows,
-        dataset.columns
+        dataset.columns,
+        dataConfigs
       );
 
       this.registerGeoMap(styleConfigs);
@@ -128,14 +129,14 @@ export function GaodeMapChart({ dHelper }): IChart & any {
         },
         animation: true,
         visualMap: this.getVisualMap(
-          objDataColumns,
+          chartDataSet,
           groupConfigs,
           aggregateConfigs,
           sizeConfigs,
           styleConfigs
         ),
         series: this.getMetricAndSizeSeries(
-          objDataColumns,
+          chartDataSet,
           groupConfigs,
           aggregateConfigs,
           sizeConfigs,
@@ -152,7 +153,7 @@ export function GaodeMapChart({ dHelper }): IChart & any {
     },
 
     getMetricAndSizeSeries(
-      objDataColumns,
+      chartDataSet,
       groupConfigs,
       aggregateConfigs,
       sizeConfigs,
@@ -162,7 +163,7 @@ export function GaodeMapChart({ dHelper }): IChart & any {
       const cycleRatio = dHelper.getValue(styleConfigs, ["map", "cycleRatio"]);
       const font = dHelper.getValue(styleConfigs, ["label", "font"]);
       const { min, max } = this.getDataColumnMaxAndMin(
-        objDataColumns,
+        chartDataSet,
         sizeConfigs[0]
       );
       const scaleRatio = cycleRatio || 1;
@@ -176,18 +177,14 @@ export function GaodeMapChart({ dHelper }): IChart & any {
           zlevel: 2,
           coordinateSystem: "amap",
           symbol: "circle",
-          data: objDataColumns
+          data: chartDataSet
             ?.map((row) => {
               return {
-                name: this.mappingGeoName(
-                  row[dHelper.getValueByColumnKey(groupConfigs[0])]
-                ),
+                name: this.mappingGeoName(row.getCell(groupConfigs[0])),
                 value: this.mappingGeoCoordination(
-                  row[dHelper.getValueByColumnKey(groupConfigs[0])],
-                  row[dHelper.getValueByColumnKey(sizeConfigs[0])] ||
-                    defaultSizeValue,
-                  row[dHelper.getValueByColumnKey(aggregateConfigs[0])] ||
-                    defaultColorValue
+                  row.getCell(groupConfigs[0]),
+                  row.getCell(sizeConfigs[0]) || defaultSizeValue,
+                  row.getCell(aggregateConfigs[0]) || defaultColorValue
                 ),
               };
             })
@@ -214,7 +211,7 @@ export function GaodeMapChart({ dHelper }): IChart & any {
     },
 
     getVisualMap(
-      objDataColumns,
+      chartDataSet,
       groupConfigs,
       aggregateConfigs,
       sizeConfigs,
@@ -232,7 +229,7 @@ export function GaodeMapChart({ dHelper }): IChart & any {
       }
 
       const { min, max } = this.getDataColumnMaxAndMin(
-        objDataColumns,
+        chartDataSet,
         aggregateConfigs?.[0]
       );
 
@@ -262,10 +259,8 @@ export function GaodeMapChart({ dHelper }): IChart & any {
       ];
     },
 
-    getDataColumnMaxAndMin(objDataColumns, config) {
-      const datas = objDataColumns.map(
-        (row) => row[dHelper.getValueByColumnKey(config)]
-      );
+    getDataColumnMaxAndMin(chartDataSet, config) {
+      const datas = chartDataSet.map((row) => row.getCell(config));
       const min = Number.isNaN(Math.min(...datas)) ? 0 : Math.min(...datas);
       const max = Number.isNaN(Math.max(...datas)) ? 100 : Math.max(...datas);
       return { min, max };

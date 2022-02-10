@@ -1041,11 +1041,12 @@ export function PivotTableChart({ dHelper }) {
         .filter((c) => c.type === "aggregate")
         .flatMap((config) => config.rows || []);
 
-      const objDataColumns = dHelper.transformToObjectArray(
+      const chartDataSet = dHelper.transformToDataSet(
         dataset.rows,
-        dataset.columns
+        dataset.columns,
+        dataConfigs
       );
-      const dataColumns = objDataColumns;
+
       const xAxisColumns = groupConfigs.map((config) => {
         return {
           type: "category",
@@ -1063,16 +1064,14 @@ export function PivotTableChart({ dHelper }) {
           sampling: "average",
           areaStyle: this.isArea ? {} : undefined,
           stack: this.isStack ? "total" : undefined,
-          data: dataColumns.map(
-            (dc) => dc[dHelper.getValueByColumnKey(config)]
-          ),
+          data: chartDataSet.map((dc) => dc.getCell(config)),
           ...this.getLabelStyle(styleConfigs),
           ...this.getSeriesStyle(styleConfigs),
         };
       });
 
-      const { min, max } = dHelper.getDataColumnMaxAndMin(
-        objDataColumns,
+      const { min, max } = dHelper.getDataColumnMaxAndMin2(
+        chartDataSet,
         aggregateConfigs[0]
       );
 

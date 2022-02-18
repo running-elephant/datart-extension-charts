@@ -3,7 +3,7 @@
 - [x] datart version: **1.0.0**
 - [x] status: **experimental**
 
-![ThreeJS](./callada.gif)
+![ThreeJS](./bigndundun.png)
 
 ## 使用说明
 

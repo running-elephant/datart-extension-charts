@@ -13,7 +13,8 @@
   },
   "homepage": "https://github.com/Cuiyansong/datart-extension-charts-fork#readme",
   "scripts": {
-    "build": "rollup --config"
+    "build": "rollup -c",
+    "build:watch": "rollup -c -w"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^4.1.0",

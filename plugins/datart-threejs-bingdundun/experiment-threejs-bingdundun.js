@@ -183,19 +183,23 @@ export function BingDunDun({ dHelper }) {
           }
         });
 
+
+
+
+
+
+
+        
+
+
+
+
         mesh.scene.rotation.y = Math.PI / 24;
         mesh.scene.position.set(0, 0, 0);
         mesh.scene.scale.set(16, 16, 16);
 
         this.scene.fog = new THREE.Fog(0xffffff, 10, 100);
         this.scene.add(mesh.scene);
-
-        // let meshAnimation = mesh.animations[0];
-        // this.mixer = new THREE.AnimationMixer(mesh.scene);
-        // let animationClip = meshAnimation;
-        // let clipAction = this.mixer.clipAction(animationClip).play();
-        // animationClip = clipAction.getClip();
-        // scene.add(mesh.scene);
       };
       loader.load(
         "https://unpkg.com/datart-extension-charts@0.0.1/plugins/datart-threejs-bingdundun/bingdundun.glb",

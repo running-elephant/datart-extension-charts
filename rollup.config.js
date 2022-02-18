@@ -31,5 +31,9 @@ export default pluginFolders().map((name) => {
       }),
       typescript(),
     ],
+    watch: {
+      include: "plugins/**",
+      exclude: "node_modules/**",
+    },
   };
 });

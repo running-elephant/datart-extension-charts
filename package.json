@@ -1,4 +1,17 @@
 {
+  "name": "datart-extension-charts",
+  "version": "0.0.1",
+  "description": "Datart Extension Charts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cuiyansong/datart-extension-charts-fork.git"
+  },
+  "author": "Stephen Cui",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Cuiyansong/datart-extension-charts-fork/issues"
+  },
+  "homepage": "https://github.com/Cuiyansong/datart-extension-charts-fork#readme",
   "scripts": {
     "build": "rollup --config"
   },

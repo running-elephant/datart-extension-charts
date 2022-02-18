@@ -197,7 +197,10 @@ export function BingDunDun({ dHelper }) {
         // animationClip = clipAction.getClip();
         // scene.add(mesh.scene);
       };
-      loader.load("/bingdundun.glb", laoderCallback);
+      loader.load(
+        "https://unpkg.com/datart-extension-charts@0.0.1/plugins/datart-threejs-bingdundun/bingdundun.glb",
+        laoderCallback
+      );
     },
 
     onUpdated(props, context) {

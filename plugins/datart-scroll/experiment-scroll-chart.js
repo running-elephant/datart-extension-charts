@@ -189,8 +189,10 @@ export function ScrollChart({ dHelper }) {
         this.containerId = options.containerId;
         this.jQuery = context.window.$;
         this.chart = this.jQuery(`#${this.containerId}`);
-        this.chart.width(context.width+'px');
-        this.chart.html(`<table id="${this.containerId}-scroll-table" style='min-height: 100%; width: 100%;'></table>`,);
+        this.chart.width(context.width + 'px');
+        this.chart.html(
+          `<table id="${this.containerId}-scroll-table" style='min-height: 100%; width: 100%;'></table>`,
+        );
         this.tableBox = this.jQuery(
           `#${this.containerId}-scroll-table`,
         ).dataTable(dataTableOptions);
@@ -224,10 +226,10 @@ export function ScrollChart({ dHelper }) {
     },
 
     onUnMount() {
-      this.chart.marquee('destroy');
       this.tableBox.fnClearTable();
       this.tableBox.fnDestroy();
       this.jQuery(`#${this.containerId}-scroll-table`).empty();
+      this.chart.marquee('destroy');
     },
 
     onResize(opt, context) {
@@ -235,7 +237,7 @@ export function ScrollChart({ dHelper }) {
         opt.dataset,
         opt.config,
       );
-      this.chart.width(context.width+'px');
+      this.chart.width(context.width + 'px');
       this.chart.marquee('destroy');
       this.chart.marquee(marqueeOptions);
     },
@@ -244,8 +246,8 @@ export function ScrollChart({ dHelper }) {
       const styleConfigs = config.styles;
       const dataConfigs = config.datas || [];
       const mixedSectionConfigRows = dataConfigs
-        .filter(c => c.key === 'mixed')
-        .flatMap(config => config.rows || []);
+        .filter((c) => c.key === 'mixed')
+        .flatMap((config) => config.rows || []);
       const chartDataSet = dHelper.transformToDataSet(
         dataset.rows,
         dataset.columns,
@@ -284,9 +286,9 @@ export function ScrollChart({ dHelper }) {
           pauseOnCycle: duration || 0,
         },
         dataTableOptions: {
-          data: chartDataSet.map(dc => {
+          data: chartDataSet.map((dc) => {
             const dataConfig = {};
-            mixedSectionConfigRows.forEach(mixedConfig => {
+            mixedSectionConfigRows.forEach((mixedConfig) => {
               dataConfig[dHelper.getColumnRenderName(mixedConfig)] =
                 dHelper.toFormattedValue(
                   dc.getCell(mixedConfig),
@@ -295,7 +297,7 @@ export function ScrollChart({ dHelper }) {
             });
             return dataConfig;
           }),
-          columns: mixedSectionConfigRows.map(mixedConfig => ({
+          columns: mixedSectionConfigRows.map((mixedConfig) => ({
             data: dHelper.getColumnRenderName(mixedConfig),
           })),
           cellBorder: true,

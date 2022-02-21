@@ -119,7 +119,7 @@ export function ScrollChart({ dHelper }) {
         {
           lang: 'zh-CN',
           translation: {
-            chartName: '[Experiment] 用户自定义滚动图表',
+            chartName: '[Experiment] 自定义Jquery滚动图表插件',
             marquee: {
               title: '滚动设置',
               delayBeforeStart: '开始延迟',

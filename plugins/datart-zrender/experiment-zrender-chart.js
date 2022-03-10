@@ -126,7 +126,7 @@ export function ZRenderChart({ dHelper }) {
       this.chart = zrender.init(
         context.document.getElementById(options.containerId)
       );
-      this._mouseEvents.forEach((event) => {
+      this.mouseEvents.forEach((event) => {
         this.chart.on(event.name, event.callback);
       });
     },

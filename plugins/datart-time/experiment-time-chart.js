@@ -1828,7 +1828,7 @@ export function LifeExpectancyChart({ dHelper }) {
     onUpdated(props) {
       if (!props.dataset || !props.dataset.columns || !props.config) {
         return;
-      }w
+      }
       if (!this.isMatchRequirement(props.config)) {
         this.chart?.clear();
         return;

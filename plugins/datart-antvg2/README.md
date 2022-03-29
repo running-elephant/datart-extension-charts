@@ -1,14 +1,6 @@
-## [Experimental] AntV G2
+## [Experimental] AntV GG
 
 - [x] datart version: **1.0.0**
 - [x] status: **experimental**
 
-![ZRender](./experiment-antvg2-chart.png)
-
-## 使用说明
-
-### 数据区域配置
-
-### 样式区域配置
-
-
+![AntVGG](./experiment-antvg2-chart.png)

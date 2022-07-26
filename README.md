@@ -28,6 +28,47 @@
 
 **Please take a look plugins folder**
 
+## Sample
+<div style="display:flex;flex-direction:column;">
+    <div style="flex:1">
+        <h3>Antv/G2</h3>
+        <img src="plugins/datart-antvg2/experiment-antvg2-chart.png" alt="Antv/G2"/>
+    </div>
+    <div style="flex:1">
+        <h3>BabylonJS</h3>
+        <img src="plugins/datart-babylon/babylon-js-demo.png" alt="BabylonJS"/>
+    </div>
+     <div style="flex:1">
+        <h3>ChartJS</h3>
+        <img src="plugins/datart-chartjs/experiment-chartjs-sample.png" alt="ChartJS"/>
+    </div>
+     <div style="flex:1">
+        <h3>ThreeJS-BingDunDun</h3>
+        <img src="plugins/datart-threejs-bingdundun/bigndundun.png" alt="ThreeJS-BingDunDun"/>
+    </div>
+     <div style="flex:1">
+        <h3>ThreeJS-WebGL</h3>
+        <img src="plugins/datart-threejs-webgl/callada.gif" alt="ThreeJS-BingDunDun"/>
+    </div>
+     <div style="flex:1">
+        <h3>ECharts-Time</h3>
+        <img src="plugins/datart-time/time-series-chart.png" alt="ECharts-Time"/>
+    </div>
+     <div style="flex:1">
+        <h3>Mermaid-UML</h3>
+        <img src="plugins/datart-uml/experiment-uml-chart.png" alt="Mermaid-UML"/>
+    </div>
+     <div style="flex:1">
+        <h3>VueJS</h3>
+        <img src="plugins/datart-vuejs/vuejs-chart.png" alt="VueJS"/>
+    </div>
+     <div style="flex:1">
+        <h3>ZRender</h3>
+        <img src="plugins/datart-zrender/experiment-zrender-chart.png" alt="ZRender"/>
+    </div>
+</div>
+
+
 ## More Posts
 - [x] Plugin Chart Helper API document: https://running-elephant.github.io/datart-docs/api/
 - [x] How to Make a Plugin Chart: https://running-elephant.github.io/datart-docs/docs/chart_plugin.html

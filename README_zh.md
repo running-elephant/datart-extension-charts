@@ -30,10 +30,54 @@ __注意：插件图表文件夹的名称必须以`datart-`开头，这样当运
 
 **请查看`plugins`文件夹📁下面的图表示例**
 
+## Sample
+<div style="display:flex;flex-direction:column;">
+    <div style="flex:1">
+        <h3>Antv/G2</h3>
+        <img src="plugins/datart-antvg2/experiment-antvg2-chart.png" alt="Antv/G2"/>
+    </div>
+    <div style="flex:1">
+        <h3>BabylonJS</h3>
+        <img src="plugins/datart-babylon/babylon-js-demo.png" alt="BabylonJS"/>
+    </div>
+     <div style="flex:1">
+        <h3>ChartJS</h3>
+        <img src="plugins/datart-chartjs/experiment-chartjs-sample.png" alt="ChartJS"/>
+    </div>
+     <div style="flex:1">
+        <h3>ThreeJS-BingDunDun</h3>
+        <img src="plugins/datart-threejs-bingdundun/bigndundun.png" alt="ThreeJS-BingDunDun"/>
+    </div>
+     <div style="flex:1">
+        <h3>ThreeJS-WebGL</h3>
+        <img src="plugins/datart-threejs-webgl/callada.gif" alt="ThreeJS-BingDunDun"/>
+    </div>
+     <div style="flex:1">
+        <h3>ECharts-Time</h3>
+        <img src="plugins/datart-time/time-series-chart.png" alt="ECharts-Time"/>
+    </div>
+     <div style="flex:1">
+        <h3>Mermaid-UML</h3>
+        <img src="plugins/datart-uml/experiment-uml-chart.png" alt="Mermaid-UML"/>
+    </div>
+     <div style="flex:1">
+        <h3>VueJS</h3>
+        <img src="plugins/datart-vuejs/vuejs-chart.png" alt="VueJS"/>
+    </div>
+     <div style="flex:1">
+        <h3>ZRender</h3>
+        <img src="plugins/datart-zrender/experiment-zrender-chart.png" alt="ZRender"/>
+    </div>
+</div>
+
+
 ## 更多文章链接
 - [x] Plugin Chart Helper API document: https://running-elephant.github.io/datart-docs/api/
 - [x] How to Make a Plugin Chart: https://running-elephant.github.io/datart-docs/docs/chart_plugin.html
 - [x] How to Make Chart Config: https://juejin.cn/post/7040683275446124574
+- [x] Vue 跑马灯插件示例: https://mp.weixin.qq.com/s/a4DVf-5LHVQAknmKKE6DJA
+- [x] JQuery 图表插件：https://mp.weixin.qq.com/s/9hBNSla86Fzouy0WdXqSQQ
+- [x] 手把手教你开发出优秀的图表插件作品： https://mp.weixin.qq.com/s/nYMAaiT97NPkm71FpW8LSw 
 
 
 [^1]: https://zh.wikipedia.org/wiki/%E7%AB%8B%E5%8D%B3%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0%E8%A1%A8%E8%BE%BE%E5%BC%8F

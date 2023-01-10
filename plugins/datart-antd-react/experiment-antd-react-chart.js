@@ -92,7 +92,7 @@ export function AntDesignChart({ dHelper }) {
     meta: {
       id: "experiment-antd-react-chart",
       name: "[Experiment] Ant Design React",
-      icon: icon,
+      icon: "chart",
     },
     _ReactDom: null,
     _React: null,

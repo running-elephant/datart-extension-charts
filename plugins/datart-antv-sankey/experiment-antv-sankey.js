@@ -228,6 +228,7 @@ export function AntVSankey({ dHelper }) {
 
     onUpdated(options, context) {
       if (!this._chart) return;
+      if (!this.isMatchRequirement(options.config)) return;
 
       const newOptions = this.getOptions(
         options.dataset,

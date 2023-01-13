@@ -144,7 +144,7 @@ export function AntVSankey({ dHelper }) {
             },
             theme: {
               title: "主题设置",
-              current: "当前主题"
+              current: "当前主题",
             },
             geometry: {
               title: "几何样式设置",
@@ -170,7 +170,7 @@ export function AntVSankey({ dHelper }) {
             },
             theme: {
               title: "Theme Style",
-              current: "Current"
+              current: "Current",
             },
             geometry: {
               title: "Geometry Style",
@@ -228,7 +228,6 @@ export function AntVSankey({ dHelper }) {
 
     onUpdated(options, context) {
       if (!this._chart) return;
-      if (!this.isMatchRequirement(options.config)) return;
 
       const newOptions = this.getOptions(
         options.dataset,

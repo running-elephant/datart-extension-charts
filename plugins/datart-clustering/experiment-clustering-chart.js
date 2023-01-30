@@ -28,14 +28,14 @@ export function ClusteringChart({ dHelper }) {
         {
           label: `${DATART_TRANSLATE_HOLDER}.xAxis`,
           key: "xAxis",
-          type: "group",
+          type: "mixed",
           required: true,
           limit: [1, 1],
         },
         {
           label: `${DATART_TRANSLATE_HOLDER}.yAxis`,
           key: "yAxis",
-          type: "aggregate",
+          type: "mixed",
           required: true,
           limit: [1, 1],
         },
@@ -138,7 +138,9 @@ export function ClusteringChart({ dHelper }) {
     getOptions(dataset, config) {
       const settingsConfigs = config.settings || [];
       const dataConfigs = config.datas || [];
-      const data = dataset.rows;
+      const data = dataset.rows?.map((row) => {
+        return row?.map((col) => +col);
+      });
       const [clusterCount] = dHelper.getStyles(
         settingsConfigs,
         ["cluster"],

@@ -104,6 +104,7 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
       ],
     },
     isISOContainer: "experiment-threejs-industry",
+    useIFrame: false,
     dependency: [
       "https://cdn.jsdelivr.net/npm/three@0.135.0/build/three.min.js",
       "https://unpkg.com/three@0.135.0/examples/js/controls/OrbitControls.js",
@@ -323,8 +324,6 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
 
     render() {
       if (!this.renderer) return;
-
-      console.log("r --------> ", this.scene, this.camera);
       this.renderer.render(this.scene, this.camera);
     },
   };

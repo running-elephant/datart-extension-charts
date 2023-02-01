@@ -3,6 +3,7 @@ import { terser } from "rollup-plugin-terser";
 import svg from "rollup-plugin-svg";
 import progress from "rollup-plugin-progress";
 import typescript from "@rollup/plugin-typescript";
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 const fs = require("fs");
 
@@ -25,6 +26,7 @@ export default (commandLineArgs) => {
         format: "iife",
       },
       plugins: [
+        nodeResolve(),
         progress({
           clearLine: false,
         }),

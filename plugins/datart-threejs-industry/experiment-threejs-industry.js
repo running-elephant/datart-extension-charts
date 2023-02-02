@@ -18,6 +18,12 @@
 
 import icon from "./threejs-icon.svg";
 import { IFCLoader } from "web-ifc-three/IFCLoader";
+import mockData from "./sample";
+import {
+  acceleratedRaycast,
+  computeBoundsTree,
+  disposeBoundsTree,
+} from "three-mesh-bvh";
 
 /**
  * Example From: https://github.com/mrdoob/three.js/blob/master/examples/webgl_loader_ifc.html
@@ -29,76 +35,95 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
         {
           label: "dimension",
           key: "dimension",
-          required: true,
-          type: "group",
+          actions: ["sortable", "alias"],
         },
         {
           label: "metrics",
           key: "metrics",
-          required: true,
-          type: "aggregate",
-        },
-        {
-          label: "filter",
-          key: "filter",
-          type: "filter",
-          allowSameField: true,
-        },
-        {
-          label: "colorize",
-          key: "color",
-          type: "color",
+          rows: [],
+          actions: ["format", "aggregate"],
         },
       ],
       styles: [
         {
-          label: "label.title",
+          label: "label",
           key: "label",
           comType: "group",
           rows: [
             {
-              label: "label.text",
-              key: "text",
-              default: "datart",
-              comType: "input",
+              label: "showLabel",
+              key: "showLabel",
+              default: false,
+              comType: "checkbox",
             },
             {
-              label: "label.fontLeft",
-              key: "fontL",
-              comType: "font",
-              default: {
-                fontFamily: "Lato",
-                fontSize: 200,
-                fontWeight: "bolder",
-                fontStyle: "normal",
-                color: "#0ff",
+              label: "showLabelBySwitch",
+              key: "showLabelBySwitch",
+              default: true,
+              comType: "switch",
+              watcher: {
+                deps: ["showLabel"],
+                action: (props) => {
+                  return {
+                    comType: props.showLabel ? "checkbox" : "switch",
+                    disabled: props.showLabel,
+                  };
+                },
               },
             },
             {
-              label: "label.fontRight",
-              key: "fontR",
+              label: "showDataColumns",
+              key: "dataColumns",
+              comType: "select",
+              options: [
+                {
+                  getItems: (cols) => {
+                    const sections = (cols || []).filter((col) =>
+                      ["metrics", "dimension"].includes(col.key)
+                    );
+                    const columns = sections.reduce(
+                      (acc, cur) => acc.concat(cur.rows || []),
+                      []
+                    );
+                    return columns.map((c) => ({
+                      key: c.uid,
+                      value: c.uid,
+                      label:
+                        c.label || c.aggregate
+                          ? `${c.aggregate}(${c.colName})`
+                          : c.colName,
+                    }));
+                  },
+                },
+              ],
+            },
+            {
+              label: "font",
+              key: "font",
               comType: "font",
-              default: {
-                fontFamily: "Lato",
-                fontSize: 200,
-                fontWeight: "bolder",
-                fontStyle: "normal",
-                color: "#f0f",
-              },
             },
           ],
         },
       ],
       i18ns: [
         {
-          lang: "zh-CN",
+          lang: "zh",
           translation: {
-            label: {
-              title: "标签",
-              text: "文本",
-              fontLeft: "主字体",
-              fontRight: "副字体",
-            },
+            label: "标签",
+            showLabel: "显示标签",
+            showLabelBySwitch: "显示标签2",
+            showLabelByInput: "显示标签3",
+            showLabelWithSelect: "显示标签4",
+          },
+        },
+        {
+          lang: "en",
+          translation: {
+            label: "Label",
+            showLabel: "Show Label",
+            showLabelBySwitch: "Show Lable Switch",
+            showLabelWithInput: "Show Label Input",
+            showLabelWithSelect: "Show Label Select",
           },
         },
       ],
@@ -106,6 +131,8 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
     isISOContainer: "experiment-threejs-industry",
     useIFrame: false,
     dependency: [
+      "https://cdnjs.cloudflare.com/ajax/libs/antv-g2/4.1.34/g2.min.js",
+      "https://cdn.jsdelivr.net/npm/@antv/data-set@0.11.8/build/data-set.min.js",
       "https://cdn.jsdelivr.net/npm/three@0.135.0/build/three.min.js",
       "https://unpkg.com/three@0.135.0/examples/js/controls/OrbitControls.js",
     ],
@@ -132,11 +159,22 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
     window: null,
     ifcLoader: null,
     THREE: null,
+    chart: null,
 
     onMount(options, context) {
       if (options.containerId === undefined || !context.document) {
         return;
       }
+
+      const chartDomEle = document.createElement("div");
+      if (context.window.G2) {
+        chartDomEle.style.position = "absolute";
+        chartDomEle.style.top = "25px";
+        chartDomEle.style.right = "25px";
+        chartDomEle.style.opacity = 0.8;
+        this.chart = this.initAntVChart(options, context, chartDomEle);
+      }
+
       const { THREE } = context.window;
       if (!THREE) {
         return;
@@ -144,6 +182,15 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
       this.THREE = THREE;
       this.window = context.window;
       this.container = context.document.getElementById(options.containerId);
+      const progressBarDomEle = document.createElement("div");
+      progressBarDomEle.style.position = "absolute";
+      progressBarDomEle.style.width = "130px";
+      progressBarDomEle.style.height = "24px";
+      progressBarDomEle.style.top = "25px";
+      progressBarDomEle.style.left = "25px";
+      progressBarDomEle.style.opacity = 0.8;
+      progressBarDomEle.style.background = "green";
+      progressBarDomEle.innerHTML = "资源下载中...";
 
       //Scene
       this.scene = new THREE.Scene();
@@ -152,8 +199,8 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
       //Camera
       this.camera = new THREE.PerspectiveCamera(
         45,
-        this.window.innerWidth / this.window.innerHeight,
-        0.1,
+        context.width / context.height,
+        1,
         1000
       );
       this.camera.position.z = -70;
@@ -180,10 +227,16 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
 
       //Setup IFC Loader
       this.ifcLoader = new IFCLoader();
-      this.ifcLoader.ifcManager.setOnProgress = (event) => {
-        const progress = (event.total / event.progress) * 100;
-        console.log(`progress ---> `, progress);
-      };
+      // this.ifcLoader.ifcManager.setupThreeMeshBVH(
+      //   acceleratedRaycast,
+      //   computeBoundsTree,
+      //   disposeBoundsTree
+      // );
+      this.ifcLoader.ifcManager.setOnProgress((event) => {
+        const progress = Math.round((event.loaded / event.total) * 100);
+        progressBarDomEle.innerText = `当前进度: ${progress} %`;
+        this.render();
+      });
       this.ifcLoader.ifcManager.setWasmPath("/web-ifc/");
       this.ifcLoader.load(
         "https://threejs.org/examples/models/ifc/rac_advanced_sample_project.ifc",
@@ -193,13 +246,16 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
         }
       );
 
-      this.window.onpointerdown = (event) => this.selectObject(event);
+      // 选择模型片段效果实现
+      // this.window.onpointerdown = (event) => this.selectObject(event, context);
 
       //Renderer
       this.renderer = new THREE.WebGLRenderer({ antialias: true });
-      this.renderer.setSize(this.window.innerWidth, this.window.innerHeight);
-      this.renderer.setPixelRatio(this.window.devicePixelRatio);
+      this.renderer.setSize(context.width, context.height);
+      this.renderer.setPixelRatio(context.window.devicePixelRatio);
       this.container.appendChild(this.renderer.domElement);
+      this.container.appendChild(progressBarDomEle);
+      this.container.appendChild(chartDomEle);
 
       //Controls
       const controls = new THREE.OrbitControls(
@@ -207,83 +263,112 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
         this.renderer.domElement
       );
       controls.addEventListener("change", () => this.render());
-      this.window.addEventListener("resize", () => this.onWindowResize());
       this.render();
     },
 
     onUpdated(props, context) {
-      if (!props.dataset || !props.dataset.columns || !props.config) {
+      if (
+        !props.dataset ||
+        !props.dataset.columns ||
+        !props.config ||
+        !this.chart
+      ) {
         return;
       }
       if (!this.isMatchRequirement(props.config)) {
-        this.chart.clear();
         return;
       }
-      const { THREE, Stats } = context.window;
+      const DataSet = context.window.DataSet;
+      const ds = new DataSet();
+      const dv1 = ds.createView().source(mockData);
+      dv1.transform({
+        type: "map",
+        callback: (row) => {
+          if (typeof row.Deaths === "string") {
+            row.Deaths = row.Deaths.replace(",", "");
+          }
+          row.Deaths = parseInt(row.Deaths, 10);
+          row.death = row.Deaths;
+          row.year = row.Year;
+          return row;
+        },
+      });
+      const view1 = this.chart.createView();
+      view1.data(dv1.rows);
+      view1.axis("Year", {
+        subTickLine: {
+          count: 3,
+          length: 3,
+        },
+        tickLine: {
+          length: 6,
+        },
+      });
+      view1.axis("Deaths", {
+        label: {
+          formatter: (text) => {
+            return text.replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
+          },
+        },
+      });
+      view1.line().position("Year*Deaths");
 
-      // const gridHelper = new THREE.GridHelper(10, 20, 0x888888, 0x444444);
-      // this.scene.add(gridHelper);
+      const dv2 = ds.createView().source(dv1.rows);
+      dv2.transform({
+        type: "regression",
+        method: "polynomial",
+        fields: ["year", "death"],
+        bandwidth: 0.1,
+        as: ["year", "death"],
+      });
 
-      // const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-      // this.scene.add(ambientLight);
-
-      // const pointLight = new THREE.PointLight(0xffffff, 0.8);
-      // this.scene.add(this.camera);
-      // this.camera.add(pointLight);
-
-      // this.renderer = new THREE.WebGLRenderer({ antialias: true });
-      // this.renderer.outputEncoding = THREE.sRGBEncoding;
-      // this.renderer.setPixelRatio(window.devicePixelRatio);
-      // this.renderer.setSize(
-      //   context.window.innerWidth,
-      //   context.window.innerHeight
-      // );
-
-      // this.container.appendChild(this.renderer.domElement);
-
-      // this.controls = new THREE.OrbitControls(
-      //   this.camera,
-      //   this.renderer.domElement
-      // );
-      // this.controls.screenSpacePanning = true;
-      // this.controls.minDistance = 5;
-      // this.controls.maxDistance = 40;
-      // this.controls.target.set(0, 2, 0);
-      // this.controls.update();
-
-      // this.stats = new Stats();
-      // this.container.appendChild(this.stats.dom);
-
-      // this.animate(context.window);
+      const view2 = this.chart.createView();
+      view2.axis(false);
+      view2.data(dv2.rows);
+      view2
+        .line()
+        .position("year*death")
+        .style({
+          stroke: "#969696",
+          lineDash: [3, 3],
+        })
+        .tooltip(false);
+      view1.annotation().text({
+        content: "趋势线",
+        position: ["1970", 2500],
+        style: {
+          fill: "#8c8c8c",
+          fontSize: 14,
+          fontWeight: 300,
+        },
+        offsetY: -70,
+      });
+      this.chart.render();
     },
 
     onUnMount() {
       if (this.ifcLoader) {
         this.ifcLoader.ifcManager.dispose();
       }
+      this.chart = null;
     },
 
     onResize(_, context) {
-      if (!this.camera || !this.renderer) return;
+      if (!this.camera || !this.renderer) {
+        return;
+      }
 
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize(this.window.innerWidth, this.window.innerHeight);
-    },
-
-    onWindowResize() {
-      if (!this.camera || !this.renderer) return;
-
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(this.window.innerWidth, this.window.innerHeight);
+      this.renderer.setSize(context.width, context.height);
       this.render();
     },
 
-    selectObject(event) {
+    selectObject(event, context) {
       if (event.button != 0) return;
 
       const mouse = new this.THREE.Vector2();
-      mouse.x = (event.clientX / this.window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / this.window.innerHeight) * 2 + 1;
+      mouse.x = (event.clientX / context.width) * 2 - 1;
+      mouse.y = -(event.clientY / context.height) * 2 + 1;
 
       const raycaster = new this.THREE.Raycaster();
       raycaster.setFromCamera(mouse, this.camera);
@@ -311,7 +396,7 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
           ids: [id],
           scene: this.scene,
           removePrevious: true,
-          material: highlightMaterial,
+          // material: highlightMaterial,
         });
         const props = this.ifcLoader.ifcManager.getItemProperties(
           modelID,
@@ -325,6 +410,32 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
     render() {
       if (!this.renderer) return;
       this.renderer.render(this.scene, this.camera);
+    },
+
+    initAntVChart(options, context, chartDomEle) {
+      const { Chart } = context.window.G2;
+      if (!Chart) {
+        return;
+      }
+      const chart = new Chart({
+        container: chartDomEle,
+        autoFit: true,
+        height: 200,
+        width: 200,
+        syncViewPadding: true,
+      });
+
+      chart.scale({
+        Deaths: {
+          sync: true,
+          nice: true,
+        },
+        death: {
+          sync: true,
+          nice: true,
+        },
+      });
+      return chart;
     },
   };
 }

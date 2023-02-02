@@ -6,4 +6,4 @@
 ![ThreeJS](./callada.gif)
 
 ## 使用说明
-参考：https://github.com/mrdoob/three.js/blob/master/examples/webgl_loader_ifc.html
+https://github.com/mrdoob/three.js/blob/master/examples/webgl_loader_ifc.html

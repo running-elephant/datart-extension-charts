@@ -438,7 +438,7 @@ export function AntVG2Chart({ dHelper }) {
         return;
       }
 
-      const ds = new context.window.Dataset();
+      const ds = new context.window.DataSet();
       const chart = new Chart({
         container: options.containerId,
         autoFit: true,

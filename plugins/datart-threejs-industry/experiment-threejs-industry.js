@@ -357,9 +357,9 @@ export function ThreeJSWebGLIndustry({ dHelper }) {
       if (!this.camera || !this.renderer) {
         return;
       }
-
-      this.camera.updateProjectionMatrix();
       this.renderer.setSize(context.width, context.height);
+      camera.aspect = context.width / context.height;
+      this.camera.updateProjectionMatrix();
       this.render();
     },
 

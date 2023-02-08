@@ -18,85 +18,68 @@
 
 function D3JSScatterChart({ dHelper }) {
   return {
+    //【可选】扩展配置图表功能，可配合`数据视图`对数据处理
     config: {
       datas: [
         {
-          label: 'dimension',
-          key: 'dimension',
-          required: true,
-          type: 'group',
+          label: "dimension",
+          key: "dimension",
+          required: false,
+          type: "group",
         },
         {
-          label: 'metrics',
-          key: 'metrics',
+          label: "metrics",
+          key: "metrics",
           required: true,
-          type: 'aggregate',
+          type: "aggregate",
         },
       ],
       styles: [
         {
-          label: 'common.title',
-          key: 'scatter',
-          comType: 'group',
+          label: "common.title",
+          key: "scatter",
+          comType: "group",
           rows: [
             {
-              label: 'common.color',
-              key: 'color',
-              comType: 'fontColor',
-            },
-          ],
-        },
-      ],
-      settings: [
-        {
-          label: 'viz.palette.setting.paging.title',
-          key: 'paging',
-          comType: 'group',
-          rows: [
-            {
-              label: 'viz.palette.setting.paging.pageSize',
-              key: 'pageSize',
-              default: 1000,
-              comType: 'inputNumber',
-              options: {
-                needRefresh: true,
-                step: 1,
-                min: 0,
-              },
+              label: "common.color",
+              key: "color",
+              comType: "fontColor",
             },
           ],
         },
       ],
       i18ns: [
         {
-          lang: 'zh-CN',
+          lang: "zh-CN",
           translation: {
-            chartName: '[Experiment] D3JS 散点图',
             common: {
-              title: '散点图配置',
-              color: '气泡颜色',
+              title: "散点图配置",
+              color: "气泡颜色",
             },
           },
         },
         {
-          lang: 'en',
+          lang: "en",
           translation: {
-            chartName: '[Experiment] D3JS Scatter Chart',
             common: {
-              title: 'Scatter Setting',
-              color: 'Bubble Color',
+              title: "Scatter Setting",
+              color: "Bubble Color",
             },
           },
         },
       ],
     },
 
-    isISOContainer: 'demo-d3js-scatter-chart',
-    dependency: ['https://d3js.org/d3.v5.min.js'],
+    isISOContainer: "demo-d3js-scatter-chart",
+
+    //【必须】加载D3JS绘图引擎，此处需给出CDN链接或者服务端相对资源地址即可
+    dependency: ["https://d3js.org/d3.v5.min.js"],
+
+    //【必须】设置图表的基本信息，icon可从Datart Icon图标中选取，暂时不支持自定义
     meta: {
-      id: 'demo-d3js-scatter-chart',
-      name: 'chartName',
-      icon: 'sandiantu',
+      id: "demo-d3js-scatter-chart",
+      name: "[Plugin Demo] D3JS 散点图",
+      icon: "sandiantu",
       requirements: [
         {
           group: [0, 999],
@@ -105,6 +88,7 @@ function D3JSScatterChart({ dHelper }) {
       ],
     },
 
+    //【必须】Datart提供的生命周期函数，其他周期如onUpdated，onResize以及onUnMount
     onMount(options, context) {
       if (!context.document) {
         return;
@@ -118,11 +102,11 @@ function D3JSScatterChart({ dHelper }) {
       // 初始化D3JS绘图区域
       this.chart = context.window.d3
         .select(host)
-        .append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-        .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     },
 
     onUpdated(options, context) {
@@ -147,8 +131,8 @@ function D3JSScatterChart({ dHelper }) {
         .range([0, width]); // This is the corresponding value I want in Pixel
 
       this.chart
-        .append('g')
-        .attr('transform', 'translate(0,' + height + ')')
+        .append("g")
+        .attr("transform", "translate(0," + height + ")")
         .call(context.window.d3.axisBottom(x));
 
       // X scale and Axis
@@ -157,68 +141,71 @@ function D3JSScatterChart({ dHelper }) {
         .domain([0, 100]) // This is the min and the max of the data: 0 to 100 if percentages
         .range([height, 0]); // This is the corresponding value I want in Pixel
 
-      this.chart.append('g').call(context.window.d3.axisLeft(y));
+      this.chart.append("g").call(context.window.d3.axisLeft(y));
 
       // Add 3 dots for 0, 50 and 100%
       this.chart
-        .selectAll('whatever')
+        .selectAll("whatever")
         .data(data)
         .enter()
-        .append('circle')
-        .attr('cx', function (d) {
+        .append("circle")
+        .attr("cx", function (d) {
           return x(d.x);
         })
-        .attr('cy', function (d) {
+        .attr("cy", function (d) {
           return y(d.y);
         })
-        .style('fill', style.color)
-        .attr('r', 7);
+        .style("fill", style.color)
+        .attr("r", 7);
 
-      this.chart.selectAll('whatever').style('color', 'blue');
+      this.chart.selectAll("whatever").style("color", "blue");
     },
 
-    onUnMount() {},
-
     getOptions(dataset, config) {
-      // 当前服务端返回的数据集
+      // 当前服务端返回的图表数据集
       const dataConfigs = config.datas || [];
 
       // 获取样式配置信息
       const styleConfigs = config.styles;
+      const groupConfigs = dataConfigs
+        .filter((c) => c.type === "group")
+        .flatMap((config) => config.rows || []);
 
       // 获取指标类型配置信息
       const aggregateConfigs = dataConfigs
-        .filter(c => c.type === 'aggregate')
-        .flatMap(config => config.rows || []);
+        .filter((c) => c.type === "aggregate")
+        .flatMap((config) => config.rows || []);
 
-      // 数据转换，根据Datart提供了Helper转换工具, 转换为ChartDataSet模型
-      const chartDataSet = dHelper.transformToDataSet(
+      // 数据转换，根据Datart提供了Helper转换工具
+      const objDataColumns = dHelper.transformToObjectArray(
         dataset.rows,
-        dataset.columns,
-        dataConfigs,
+        dataset.columns
       );
-
-      const data = chartDataSet.map(row => {
+      const data = objDataColumns.map((dc) => {
         return {
-          x: row.getCell(aggregateConfigs[0]),
-          y: row.getCell(aggregateConfigs[1]),
+          x: dc[dHelper.getValueByColumnKey(aggregateConfigs[0])],
+          y: dc[dHelper.getValueByColumnKey(aggregateConfigs[1])],
         };
       });
 
-      var xMinValue = Math.min(...data.map(o => o.x));
-      var xMaxValue = Math.max(...data.map(o => o.y));
+      var xMinValue = Math.min(...data.map((o) => o.x));
+      var xMaxValue = Math.max(...data.map((o) => o.y));
 
-      var yMinValue = Math.min(...data.map(o => o.y));
-      var yMaxValue = Math.max(...data.map(o => o.y));
+      var yMinValue = Math.min(...data.map((o) => o.y));
+      var yMaxValue = Math.max(...data.map((o) => o.y));
 
       // 获取用户配置
-      const color = dHelper.getValue(styleConfigs, ['scatter', 'color']);
+      const color = dHelper.getStyleValueByGroup(
+        styleConfigs,
+        "scatter",
+        "color"
+      );
 
       return {
         style: {
           color,
         },
-        data: data.map(d => {
+        data: data.map((d) => {
           return {
             x: ((d.x || xMinValue - xMinValue) * 100) / (xMaxValue - xMinValue),
             y: ((d.y || yMinValue - yMinValue) * 100) / (yMaxValue - yMinValue),
@@ -226,5 +213,7 @@ function D3JSScatterChart({ dHelper }) {
         }),
       };
     },
+
+    onUnMount() {},
   };
 }

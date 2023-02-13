@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+import Icon from './baidu-map-logo.svg'
+
 export function BMap({ dHelper }) {
   return {
     config: {
@@ -67,9 +69,9 @@ export function BMap({ dHelper }) {
       "https://fastly.jsdelivr.net/npm/echarts@5.4.1/dist/extension/bmap.min.js",
     ],
     meta: {
-      id: "Map-chart",
+      id: "baidu-map",
       name: "百度地图",
-      icon: "fsux_tubiao_ditu",
+      icon: Icon,
       requirements: [
         {
           group: 0,
